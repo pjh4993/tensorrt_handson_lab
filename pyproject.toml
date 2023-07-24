@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "tensorrt-handson-lab"
+version = "0.1.0"
+description = ""
+authors = ["junhopark <pjh4993@naver.com>"]
+readme = "README.md"
+packages = [{include = "tensorrt_handson_lab"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+timm = "^0.9.2"
+torch = {version = "2.0.0", source = "torch-gpu", platform = "linux"}
+onnx = "^1.14.0"
+onnxruntime-gpu = "^1.15.1"
+netron = "^7.0.7"
+numpy = "^1.24.0"
+pycuda = "^2022.2.2"
+cuda-python = "^12.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "torch-gpu"
+url = "https://download.pytorch.org/whl/cu117"
+priority = "supplemental"

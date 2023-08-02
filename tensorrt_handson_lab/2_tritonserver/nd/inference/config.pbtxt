@@ -1,0 +1,47 @@
+name: "inference"
+platform: "tensorrt_plan"
+backend: "tensorrt"
+max_batch_size : 32
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [ 3, 224, 224 ]
+  }
+]
+output [
+  {
+    name: "outputs"
+    data_type: TYPE_FP32
+    dims: [ 12 ]
+  }
+]
+dynamic_batching{
+    max_queue_delay_microseconds: 100000
+    preferred_batch_size: [16, 32]
+}
+instance_group[
+    {
+        count : 2
+        kind: KIND_GPU
+        gpus: [ 0 ]
+    }
+]
+optimization{
+   graph: {
+       level : 1
+   }
+   eager_batching : 1
+   cuda: {
+       graphs: 1
+       graph_spec: [
+        {
+            batch_size: 16
+        },
+        {
+            batch_size: 32
+        }
+      ]
+   }
+}

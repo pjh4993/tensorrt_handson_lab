@@ -10,12 +10,13 @@ packages = [{include = "tensorrt_handson_lab"}]
 python = "^3.8"
 timm = "^0.9.2"
 torch = {version = "2.0.0", source = "torch-gpu", platform = "linux"}
-onnx = "^1.14.0"
+onnx = "^1.12.0"
 onnxruntime-gpu = "^1.15.1"
 netron = "^7.0.7"
 numpy = "^1.24.0"
 pycuda = "^2022.2.2"
 cuda-python = "^12.2.0"
+trex = {path = "thirdparty/TensorRT/tools/experimental/trex"}
 
 
 [build-system]

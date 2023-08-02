@@ -1,0 +1,37 @@
+name: "preprocessing"
+backend: "python"
+input [
+{
+    name: "preprocessing_input"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+}
+]
+
+output [
+{
+    name: "preprocessing_output_img"
+    data_type: TYPE_FP32
+    dims: [ 3, 224, 224 ]
+}
+]
+
+instance_group [
+    {
+        count : 4
+        kind: KIND_CPU
+    }
+]
+
+dynamic_batching{
+    max_queue_delay_microseconds: 1000
+}
+
+parameters: {
+    key: "BUCKET_NAME"
+    value: {string_value: "pyler-thumbnail-storage-alpha"}
+},
+parameters: {
+    key: "VERSION",
+    value: {string_value: "nude-detector:v0.1.5-triton"}
+}

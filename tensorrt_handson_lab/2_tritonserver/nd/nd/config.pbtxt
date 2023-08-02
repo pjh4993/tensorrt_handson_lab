@@ -1,0 +1,49 @@
+name: "nd"
+platform: "ensemble"
+max_batch_size: 32
+version_policy{
+  latest: {num_versions: 1}
+}
+input [
+  {
+    name: "request"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  }
+]
+output [
+  {
+    name: "response"
+    data_type: TYPE_FP32
+    dims: [ 12 ]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "preprocessing"
+      model_version: -1
+      input_map {
+        key: "preprocessing_input"
+        value: "request"
+      }
+      output_map {
+        key: "preprocessing_output_img"
+        value: "imgs"
+      }
+    },
+    {
+      model_name: "inference"
+      model_version: -1
+      input_map {
+        key: "x"
+        value: "imgs"
+      }
+      output_map {
+        key: "outputs"
+        value: "response"
+      }
+    }
+  ]
+}

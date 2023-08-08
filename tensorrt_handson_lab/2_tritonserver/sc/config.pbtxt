@@ -1,0 +1,52 @@
+name: "sc"
+platform: "tensorrt_plan"
+backend: "tensorrt"
+max_batch_size : 64
+input [
+  {
+    name: "input_ids"
+    data_type: TYPE_INT32
+    dims: [ 140 ]
+  },
+  {
+    name: "attention_mask"
+    data_type: TYPE_INT32
+    dims: [ 140 ]
+  }
+]
+output [
+  {
+    name: "outputs"
+    data_type: TYPE_FP32
+    dims: [ 3 ]
+  }
+]
+dynamic_batching{
+    max_queue_delay_microseconds: 20000
+    preferred_batch_size: [32, 64]
+}
+instance_group[
+    {
+        count : 4
+        kind: KIND_GPU
+        gpus: [ 0 ]
+    }
+]
+
+optimization{
+   graph: {
+       level : 1
+   }
+   eager_batching : 1
+   cuda: {
+       graphs: 1
+       graph_spec: [
+        {
+            batch_size: 32
+        },
+        {
+            batch_size: 64
+        }
+      ]
+   }
+}
